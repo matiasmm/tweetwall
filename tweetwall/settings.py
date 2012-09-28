@@ -51,7 +51,7 @@ MEDIA_URL = ''
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = ''
 
-STATIC_URL = environ('STATIC_URL')
+STATIC_URL = environ['STATIC_URL']
 
 # List of finder classes that know how to find static files in
 # various locations.
