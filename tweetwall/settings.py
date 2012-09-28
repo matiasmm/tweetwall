@@ -1,4 +1,5 @@
 # Django settings for tweetwall project.
+from os import environ
 import dj_database_url
 
 DEBUG = True
@@ -49,6 +50,8 @@ MEDIA_URL = ''
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = ''
+
+STATIC_URL = os.environ('STATIC_URL')
 
 # List of finder classes that know how to find static files in
 # various locations.
