@@ -1,32 +1,52 @@
 # -*- coding: utf-8 *-*
+from django.conf import settings
+from django.core.urlresolvers import reverse
 from twython import Twython
+
 
 class Tweetwall(object):
 
-	def __init__(self, oauth_callback, consumer_key, consumer_secret,
-				 oauth_token=None, oauth_token_secret=None):
-		self.twython = Twython(app_key=consumer_key,
-            app_secret=consumer_secret,
-            oauth_token=oauth_token,
-            oauth_token_secret=oauth_token_secret,
-            callback_url=oauth_callback)
+	def __init__(self, request):
+		self.request = request
 
 
-	def get_authenticate_url(self):
+	def get_authentication_url(self, request):
+		self.twython = Twython(twitter_token=settings.CONSUMER_KEY,
+            twitter_secret=settings.CONSUMER_SECRET,
+            callback_url=self.request.build_absolute_uri(reverse('tweetwall.views.wall')))
+		auth_tokens = self.twython.get_authentication_tokens()
+		request.session['oauth_token'] = auth_tokens['oauth_token']
+		request.session['oauth_token_secret'] = auth_tokens['oauth_token_secret']
+
 		return self.twython.get_authentication_tokens()['auth_url']
 
 
-	def get_authentication_token(self):
-		return self.twython.get_authentication_tokens()['oauth_token']
+	def handle_callback(self, request):
+		self.twython = Twython(twitter_token=settings.CONSUMER_KEY,
+            twitter_secret=settings.CONSUMER_SECRET,
+            oauth_token=request.session['oauth_token'],
+            oauth_token_secret=request.session['oauth_token_secret'])
+		auth_tokens = self.twython.get_authorized_tokens()
+		request.session['oauth_token'] = auth_tokens['oauth_token']
+		request.session['oauth_token_secret'] = auth_tokens['oauth_token_secret']
 
-	def get_authentication_token_secret(self):
-		return self.twython.get_authentication_tokens()['oauth_token_secret']
 
-	def get_authorized_token(self):
-		return self.twython.get_authorized_tokens()['oauth_token']
+	def save_tokens(self, tokens):
+		self.request.session['oauth_token'] = tokens['oauth_token']
+		self.request.session['oauth_token_secret'] = tokens['oauth_token_secret']
 
-	def get_authorized_token_secret(self):
-		return self.twython.get_authorized_tokens()['oauth_token_secret']
 
-	def get_tweets(self):
+	def get_oauth_token(self):
+		return self.request.session.get('oauth_token')
+
+
+	def get_oauth_token_secret(self):
+		return self.request.session.get('oauth_token_secret')
+
+
+	def get_tweets(self, request):
+		self.twython = Twython(twitter_token=settings.CONSUMER_KEY,
+            twitter_secret=settings.CONSUMER_SECRET,
+            oauth_token=request.session['oauth_token'],
+            oauth_token_secret=request.session['oauth_token_secret'])
 		return self.twython.getHomeTimeline()

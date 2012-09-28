@@ -2,25 +2,35 @@
 from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import redirect, render_to_response
-from tweetwall import Tweetwall
+from django.core.urlresolvers import reverse
+
+from twython import Twython
 
 
 def signin(request):
-	tweetwall = Tweetwall(settings.OAUTH_CALLBACK, settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
-	request.session['oauth_token'] = tweetwall.get_authentication_token()
-	request.session['oauth_token_secret'] = tweetwall.get_authentication_token_secret()
-	return redirect(tweetwall.get_authenticate_url())
+	twython = Twython(twitter_token=settings.CONSUMER_KEY,
+					twitter_secret=settings.CONSUMER_SECRET,
+					callback_url=request.build_absolute_uri(reverse('tweetwall.views.oauth_callback')))
+	auth_tokens = twython.get_authentication_tokens()
+	request.session['oauth_token'] = auth_tokens['oauth_token']
+	request.session['oauth_token_secret'] = auth_tokens['oauth_token_secret']
+	return redirect(auth_tokens['auth_url'])
 
 
 def oauth_callback(request):
-	tweetwall = Tweetwall(settings.OAUTH_CALLBACK, settings.CONSUMER_KEY, settings.CONSUMER_SECRET,
-						request.session.get('oauth_token'), request.session.get('oauth_token_secret'))
-	request.session['oauth_token'] = tweetwall.get_authorized_token()
-	request.session['oauth_token_secret'] = tweetwall.get_authorized_token_secret()
+	twython = Twython(twitter_token=settings.CONSUMER_KEY,
+					twitter_secret=settings.CONSUMER_SECRET,
+					oauth_token=request.session.get('oauth_token'),
+					oauth_token_secret=request.session.get('oauth_token_secret'))
+	twitter_tokens = twython.get_authorized_tokens()
+	request.session['oauth_token'] = twitter_tokens['oauth_token']
+	request.session['oauth_token_secret'] = twitter_tokens['oauth_token_secret']
 	return redirect('/tweetwall/wall')
 
 
 def wall(request):
-	tweetwall = Tweetwall(settings.OAUTH_CALLBACK, settings.CONSUMER_KEY, settings.CONSUMER_SECRET,
-						request.session.get('oauth_token'), request.session.get('oauth_token_secret'))
-	return render_to_response('wall.html', {'tweets':tweetwall.get_tweets()})
+	twython = Twython(twitter_token = settings.CONSUMER_KEY,
+					twitter_secret = settings.CONSUMER_SECRET,
+					oauth_token = request.session.get('oauth_token'),
+					oauth_token_secret = request.session.get('oauth_token_secret'))
+	return render_to_response('wall.html', {'tweets':twython.getHomeTimeline()})
