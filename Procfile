@@ -1,1 +1,1 @@
-web: python manage.py runserver --settings tweetwall.settings.production
+web: python manage.py runserver 0.0.0.0:$PORT --settings tweetwall.settings.production
