@@ -56,12 +56,12 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 TEMPLATE_DIRS = (
-    os.path.join(SITE_ROOT, 'templates'),
+    os.path.join(PROJECT_ROOT, 'templates'),
 )
 
 
 STATICFILES_DIRS = (
-    os.path.join(SITE_ROOT, 'static'),
+    os.path.join(PROJECT_ROOT, 'static'),
 )
 
 # List of finder classes that know how to find static files in
