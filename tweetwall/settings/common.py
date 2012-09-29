@@ -2,18 +2,15 @@
 import os
 import dj_database_url
 
-DEBUG=os.environ['DEBUG_APP']
-
+env = lambda e, d: os.environ[e] if os.environ.has_key(e) else d
 
 ADMINS = (
     ('Ezequiel Pochiero', 'epochiero@gmail.com'),
 )
 
+MANAGERS = ADMINS
 
 DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
-
-
-MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -53,11 +50,9 @@ MEDIA_URL = ''
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = ''
 
+PROJECT_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
 
-STATIC_URL = os.environ['STATIC_URL']
-
-
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+STATIC_URL = env('STATIC_URL', '')
 
 
 TEMPLATE_DIRS = (
@@ -74,20 +69,26 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 ROOT_URLCONF = 'tweetwall.urls'
 
-# Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'tweetwall.wsgi.application'
+
+MIDDLEWARE_CLASSES = (
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+)
+
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -96,17 +97,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+
 )
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -132,30 +125,8 @@ LOGGING = {
 }
 
 
-########## EMAIL CONFIGURATION
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+SECRET_KEY = env('SECRET_KEY', '')
 
-EMAIL_HOST = os.environ['EMAIL_HOST']
+CONSUMER_KEY = env('CONSUMER_KEY', '')
 
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-
-EMAIL_PORT = os.environ['EMAIL_PORT']
-
-EMAIL_USE_TLS = True
-
-SERVER_EMAIL = EMAIL_HOST_USER
-########## END EMAIL CONFIGURATION
-
-SECRET_KEY = os.environ['SECRET_KEY']
-
-CONSUMER_KEY = os.environ['CONSUMER_KEY']
-
-CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
-
-
-try:
-    from local_settings import *
-except ImportError:
-    pass
+CONSUMER_SECRET = env('CONSUMER_SECRET', '')
