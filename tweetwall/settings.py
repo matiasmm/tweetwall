@@ -2,11 +2,16 @@
 import os
 import dj_database_url
 
+DEBUG=False
+
+
 ADMINS = (
     ('Ezequiel Pochiero', 'epochiero@gmail.com'),
 )
 
+
 DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
+
 
 MANAGERS = ADMINS
 
