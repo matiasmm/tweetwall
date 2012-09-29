@@ -2,7 +2,7 @@
 import os
 import dj_database_url
 
-DEBUG=False
+DEBUG=os.environ['DEBUG_APP']
 
 
 ADMINS = (
