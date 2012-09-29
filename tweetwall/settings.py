@@ -126,11 +126,11 @@ LOGGING = {
     }
 }
 
-SECRET_KEY = os.environ('SECRET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY']
 
-CONSUMER_KEY = os.environ('CONSUMER_KEY')
+CONSUMER_KEY = os.environ['CONSUMER_KEY']
 
-CONSUMER_SECRET = os.environ('CONSUMER_SECRET')
+CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
 
 
 try:
