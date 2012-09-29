@@ -25,7 +25,7 @@ def oauth_callback(request):
 	twitter_tokens = twython.get_authorized_tokens()
 	request.session['oauth_token'] = twitter_tokens['oauth_token']
 	request.session['oauth_token_secret'] = twitter_tokens['oauth_token_secret']
-	return redirect('/tweetwall/wall')
+	return redirect(reverse('tweetwall.views.wall'))
 
 
 def wall(request):

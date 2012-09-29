@@ -5,10 +5,10 @@ from django.views.generic import TemplateView
 
 
 urlpatterns = patterns('',
-    url(r'^tweetwall/$', TemplateView.as_view(template_name="index.html")),
-	url(r'^tweetwall/signin$', 'tweetwall.views.signin'),
-	url(r'^tweetwall/oauth_callback$', 'tweetwall.views.oauth_callback'),
-	url(r'^tweetwall/wall$', 'tweetwall.views.wall'),
+    url(r'^/$', TemplateView.as_view(template_name="index.html")),
+	url(r'^/signin$', 'tweetwall.views.signin'),
+	url(r'^/oauth_callback$', 'tweetwall.views.oauth_callback'),
+	url(r'^/wall$', 'tweetwall.views.wall'),
 )
 
 if settings.DEBUG:
