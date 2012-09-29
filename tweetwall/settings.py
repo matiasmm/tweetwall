@@ -1,9 +1,6 @@
 # Django settings for tweetwall project.
-from os import environ
+import os
 import dj_database_url
-
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -51,7 +48,15 @@ MEDIA_URL = ''
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = ''
 
-STATIC_URL = environ['STATIC_URL']
+STATIC_URL = os.environ['STATIC_URL']
+
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_ROOT, 'templates'),
+)
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -114,6 +119,13 @@ LOGGING = {
         },
     }
 }
+
+SECRET_KEY = os.environ('SECRET_KEY')
+
+CONSUMER_KEY = os.environ('CONSUMER_KEY')
+
+CONSUMER_SECRET = os.environ('CONSUMER_SECRET')
+
 
 try:
     from local_settings import *

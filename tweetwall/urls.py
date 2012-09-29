@@ -9,4 +9,5 @@ urlpatterns = patterns('',
 	url(r'^tweetwall/wall$', 'tweetwall.views.wall'),
 )
 
-urlpatterns += staticfiles_urlpatterns()
+if settings.DEBUG:
+	urlpatterns += staticfiles_urlpatterns()
