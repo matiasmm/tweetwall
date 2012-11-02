@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 
 urlpatterns = patterns('',
-    url(r'^$', TemplateView.as_view(template_name="index.html")),
+    url(r'^$', 'tweetwall.views.index'),
 	url(r'^signin$', 'tweetwall.views.signin'),
 	url(r'^oauth_callback$', 'tweetwall.views.oauth_callback'),
 	url(r'^wall$', 'tweetwall.views.wall'),
