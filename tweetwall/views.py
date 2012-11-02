@@ -3,8 +3,12 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import redirect, render_to_response
 from django.core.urlresolvers import reverse
-
+from django.template import RequestContext
 from twython import Twython
+
+def index(request):
+    return render_to_response('index.html', {'settings': settings},
+        context_instance=RequestContext(request))
 
 
 def signin(request):
@@ -33,4 +37,5 @@ def wall(request):
 					twitter_secret = settings.CONSUMER_SECRET,
 					oauth_token = request.session.get('oauth_token'),
 					oauth_token_secret = request.session.get('oauth_token_secret'))
-	return render_to_response('wall.html', {'tweets':twython.getHomeTimeline()})
+	return render_to_response('wall.html', {'tweets':twython.getHomeTimeline(),
+		'settings': settings}, context_instance=RequestContext(request))
