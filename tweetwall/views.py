@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from twython import Twython
 
+
 def index(request):
     return render_to_response('index.html', {'settings': settings},
         context_instance=RequestContext(request))

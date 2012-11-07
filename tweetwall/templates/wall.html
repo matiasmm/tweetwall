@@ -12,11 +12,23 @@
 	</head>
 	<body>
 		<script src="{{ settings.STATIC_URL }}/js/bootstrap.min.js"></script>
+		<div class="container">
+		<div class="navbar">
+		  <div class="navbar-inner">
+		    <a class="brand" href="#">Tweetwall</a>
+		    <ul class="nav">
+		      <li class="active"><a href="#">Home</a></li>
+		    </ul>
+		    <ul class="nav pull-right">
+		      <li><a href="http://github.com/epochiero/tweetwall">About</a></li>
+		    </ul>
+		  </div>
+		</div>
 		<div style="padding:25px 25px">
 			<ul>
 			{% for tweet in tweets%}
 			<li style="padding:25px">
-				<img src="{{tweet.user.profile_image_url_https}}" />
+				<img src="{{tweet.user.profile_image_url}}" />
 			{{tweet.user.name}}<br />
 			{{tweet.text}}
 			</li>
