@@ -1,5 +1,13 @@
 Django==1.4.2
-twython==2.4.0
-python-memcached==1.48
-psycopg2==2.4.5
+Jinja2==2.6
+argparse==1.2.1
 dj-database-url==0.2.1
+django-debug-toolbar==0.9.4
+gunicorn==0.16.1
+psycopg2==2.4.5
+python-memcached==1.48
+requests==0.14.2
+simplejson==2.6.2
+twitter==1.9.0
+twython==2.5.2
+wsgiref==0.1.2
